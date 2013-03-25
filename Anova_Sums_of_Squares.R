@@ -1,5 +1,18 @@
+#################################################################################
+# This demonstration illustrates how the relative "importance" of the effects 
+# can be visualized by simple bar charts of sums of squares. The interaction is
+# significant but not relatively meaningful, and the amount of Sums of Squares
+# it explains is low. This code demonstrates a Type III analysis, and be aware 
+# that philosophical arguments about why you both should and should not engage 
+# in the approach below. Notice that when all sample sizes are equal, the Sums 
+# of Squares add up to (n-1) times the variance. But change the sample sizes as
+# suggested in the comments, and they no longer do! 
+############################################################################
+
+
 rm(list = ls())
-library(qcc)
+
+library(qcc) 
 set.seed(123)
 
 mu.a1b1 <- 30.5
@@ -7,10 +20,11 @@ mu.a1b2 <- 31
 mu.a2b1 <- 40
 mu.a2b2 <- 42
 
-n.a1b1 <- 5
-n.a1b2 <- 45
-n.a2b1 <- 30
-n.a2b2 <- 20
+# Equal sample sizes needed for "balance," but try it both ways.
+n.a1b1 <- 25 #5
+n.a1b2 <- 25 #45
+n.a2b1 <- 25 #30
+n.a2b2 <- 25 #20
 
 n <- n.a1b1 + n.a2b1 + n.a1b2 + n.a2b2
 
@@ -50,10 +64,14 @@ anova <- aov(y ~ a + b + a:b, data = test.data)
 results <- drop1(anova, scope = ~., test = "F")
 
 results
+
+# See the following webpage for a discussion:
 #http://stats.stackexchange.com/questions/23197/type-iii-sum-of-squares-from-sas-and-r
 
+## Adding Sums of Squares for balanced case
 2685.31 + 52.42 + 16.48 + 81.38
 
+## Adding Sums of Squares for unbalanced case (commented out sample sizes)
 1396.32 + 23.58 + 13.74 + 80.70
 
 
