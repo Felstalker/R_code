@@ -44,24 +44,6 @@ EpubTidLists <- as(Epub, "tidLists") # still in a sparse format
 as(EpubTidLists[1:3], "list")
 
 
-### This is an example where I can use Teradata Warehouse Miner...either the regular Association Rule analysis or the Sequence Analysis provided ###
-### first, I need to coerse the transactions object into true basket data
-
-#### Example 2 ####
-EpubDataFrame <- data.frame(tid = NULL, item = NULL)
-
-for (i in 1:length(EpubList)){
-	for (j in 1:length(EpubList[[i]]))
-	EpubDataFrame <- 	 rbind(EpubDataFrame, data.frame(tid = attributes(EpubList)$names[i], item =  EpubList[[i]][j]) )
-		}
-# now I can append transaction info by merging transactionInfo(Epub), but the sequence analysis in TWM needs the items to have a 
-# time ordering with them.
-
-CKS <- odbcConnect("cksdata", uid = "ogorekb", pwd = "Teradata34")
-sqlSave(CKS, EpubDataFrame, "all_wkscratchpad_db.BAO_Epub")
-odbcClose(CKS)
-
-
 data("AdultUCI")
 z = edit(AdultUCI)
 
