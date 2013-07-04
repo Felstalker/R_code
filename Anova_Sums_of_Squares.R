@@ -20,11 +20,11 @@ mu.a1b2 <- 31
 mu.a2b1 <- 40
 mu.a2b2 <- 42
 
-# Equal sample sizes needed for "balance," but try it both ways.
-n.a1b1 <- 25 #5
-n.a1b2 <- 25 #45
-n.a2b1 <- 25 #30
-n.a2b2 <- 25 #20
+# Equal sample sizes needed for "?" but try it both ways.
+n.a1b1 <- 5
+n.a1b2 <- 45
+n.a2b1 <- 30
+n.a2b2 <- 20
 
 n <- n.a1b1 + n.a2b1 + n.a1b2 + n.a2b2
 
@@ -41,11 +41,14 @@ test.data <- data.frame(group =
 )
 test.data$y <- round(test.data$y, 1)
 
+library(qcc)
 my.qcc <- qcc(test.data$y, type = "xbar.one", add.stats=FALSE)
 
 cat("Mean of y ", mean(test.data$y),  "Variance of y ", var(test.data$y))
 cat("Sums of Squares of y ", var(test.data$y)*(n-1))
     
+
+
 boxplot(y~group, data = test.data, main = "one way layout")
 
 test.data$a <- factor(substr(test.data$group, 1,2))
@@ -60,7 +63,12 @@ plot(tbl)
 # SAS-type options for a Type III analysis
 options(contrasts=c("contr.sum","contr.poly")) 
 
-anova <- aov(y ~ a + b + a:b, data = test.data)
+my.lm <- lm(y ~ a + b + a:b, data = test.data)
+
+my.aov <- aov(my.lm)
+summary(my.aov)
+
+
 results <- drop1(anova, scope = ~., test = "F")
 
 results
